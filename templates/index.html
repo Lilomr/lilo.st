@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lilo.st</title>
+    <style>
+        body {
+            
+            font-family: Arial, sans-serif;
+            background-color: white;
+            
+            
+            
+        }   
+        form {
+            max-width: 250px;
+        
+
+            
+        }
+        label, input {
+           
+            width: 150%;
+            margin: 35px 2px;
+            font-size: 20px;
+            border-color: black;
+            border-radius: 12px;
+        }
+        button {
+            padding: 15px 70px;
+            background-color: #04AA6D;
+            border-radius: 8px;
+            color: white;
+            border: none;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            background-color: white; 
+            color: black; 
+            border: 4px solid #04AA6D
+            
+        
+            
+        }
+        button:hover {
+            background-color: #04AA6D;
+            color: white;
+            
+            
+        }
+        .message {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>REGISTRAR</h1>
+    <form id="cadastroForm">
+        <label for="name">Nome:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" required>
+        <button type="submit">Cadastrar</button>
+    </form>
+    <div class="message" id="message"></div>
+    <script>
+        document.getElementById('cadastroForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+            const response = await fetch('/cadastrar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({name, email, senha})
+            });
+            const result = await response.json();
+            const messageDiv = document.getElementById('message');
+            if (result.success) {
+                messageDiv.textContent = 'Usuário cadastrado com sucesso!';
+                messageDiv.style.color = 'green';
+            } else {
+                messageDiv.textContent = `Erro: ${result.error}`;
+                messageDiv.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>
