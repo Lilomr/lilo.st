@@ -6,40 +6,54 @@
     <title>Cadastro de Usuários</title>
     <style>
         body {
-            
+            text-align: center;
             font-family: Arial, sans-serif;
-            margin: 300px 550px;
+            margin-top: 5%;
+            display: grid;
+            justify-content: center;
         }
         form {
             max-width: 300px;
             
+            
+            
         }
-        label, input {
-            display: block;
+        label{
+            margin: 40%;
+            font-size:larger;
+            border-color: #04AA6D;
+            border-radius:4px;
             width: 100%;
             margin-bottom: 15px;
-            margin: 12px;
+        }
+         input {
+            font-size:larger;
+            margin: 18px 3px;
+            border-style: solid;
+            border-color: #04AA6D;
+            border-radius:4px;
+            width: 100%;
+            margin-bottom: 15px;
         }
         button {
             padding: 15px 70px;
+            margin: auto;
             background-color: #04AA6D;
             border-radius: 8px;
             color: white;
             border: none;
             text-align: center;
             text-decoration: none;
-            display: inline-block;
+            display: grid;
             cursor: pointer;
             background-color: white; 
             color: black; 
-            border: 4px solid #04AA6D
-            
-        
-            
+            border: 4px solid #04AA6D;
         }
         button:hover {
             background-color: #04AA6D;
             color: white;
+            margin-bottom: center;
             
             
         }
@@ -52,11 +66,11 @@
 <body>
     <h1>REGISTRAR</h1>
     <form id="cadastroForm">
-        <label for="name">Nome:</label>
+        <label for="name">Nome</label>
         <input type="text" id="name" name="name" required>
-        <label for="email">Email:</label>
+        <label for="email">Email</label>
         <input type="email" id="email" name="email" required>
-        <label for="senha">Senha:</label>
+        <label for="senha">Senha</label>
         <input type="password" id="senha" name="senha" required>
         <button type="submit">Cadastrar</button>
     </form>

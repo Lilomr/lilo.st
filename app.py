@@ -47,5 +47,23 @@ def cadastrar_usuario():
     except sqlite3.IntegrityError:
         return jsonify({'success': False, 'error': 'Email já existe'})
 
+
+# criar rota de login
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    email = data['email']
+    senha = data['senha']
+    conn = sqlite3.connect('cadastro.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+    SELECT * FROM users WHERE email = ? AND senha = ?
+    ''', (email, senha))
+    user = cursor.fetchone()
+    conn.close()
+    if user:
+        return jsonify({'success': True})
+    return jsonify({'success': False, 'error': 'Email ou senha incorretos'})
+
 if __name__ == '__main__':
     app.run(debug=True)
