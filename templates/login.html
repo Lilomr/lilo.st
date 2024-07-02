@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+    <style>
+        /* Add your custom CSS styles here */
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin-top: 5%;
+            display: grid;
+            justify-content: center;
+        }
+        form {
+            max-width: 500px;
+
+        }
+        label{
+            margin: 40%;
+            font-size:larger;
+            border-color: #04AA6D;
+            border-radius:4px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+         input {
+            font-size:larger;
+            margin: 18px 3px;
+            border-style: solid;
+            border-color: #04AA6D;
+            border-radius:4px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        button{
+            display: grid;
+            margin: auto;
+        }
+        button:hover {
+            background-color: #04AA6D;
+            color: white;
+            margin-bottom: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Login</h1>
+
+    <form>
+        <label for="name">Nome:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" required>
+
+        <button type="submit">ENTRAR</button>
+        <button type="button" onclick="window.location.href = '/cadastrar';">CADASTRAR</button>
+    </form>
+</body>
+
+</html>

@@ -81,7 +81,7 @@
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const senha = document.getElementById('senha').value;
-            const response = await fetch('/cadastrar', {
+            const response = await fetch('/api/cadastrar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

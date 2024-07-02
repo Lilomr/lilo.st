@@ -19,11 +19,35 @@ def setup_database():
 
 setup_database()
 
-@app.route('/')
-def index():
+@app.route('/login')
+def index_login():
+    return render_template('login.html')
+
+@app.route('/cadastrar')
+def index_cadastrar():
     return render_template('index.html')
 
-@app.route('/cadastrar', methods=['POST'])
+@app.route('/')
+def index():
+    return render_template('login.html')
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.json
+    email = data['email']
+    senha = data['senha']
+    conn = sqlite3.connect('cadastro.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+    SELECT * FROM users WHERE email = ? AND senha = ?
+    ''', (email, senha))
+    user = cursor.fetchone()
+    conn.close()
+    if user:
+        return jsonify({'success': True})
+    return jsonify({'success': False, 'error': 'Email ou senha incorretos'})
+
+@app.route('/api/cadastrar', methods=['POST'])
 def cadastrar_usuario():
     data = request.json
     name = data['name']
@@ -48,22 +72,7 @@ def cadastrar_usuario():
         return jsonify({'success': False, 'error': 'Email já existe'})
 
 
-# criar rota de login
-@app.route('/login', methods=['POST'])
-def login():
-    data = request.json
-    email = data['email']
-    senha = data['senha']
-    conn = sqlite3.connect('cadastro.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-    SELECT * FROM users WHERE email = ? AND senha = ?
-    ''', (email, senha))
-    user = cursor.fetchone()
-    conn.close()
-    if user:
-        return jsonify({'success': True})
-    return jsonify({'success': False, 'error': 'Email ou senha incorretos'})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
