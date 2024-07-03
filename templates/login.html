@@ -3,44 +3,73 @@
 
 <head>
     <title>Login</title>
+    <script>
+        function tentarEntrar() {
+            alert("Sem sucesso, tente novamente ou cadastre-se!");
+            window.location.href = '/cadastrar';
+
+        }</script>
     <style>
-        /* Add your custom CSS styles here */
         body {
             text-align: center;
-            font-family: Arial, sans-serif;
+            font-family:  "Helvetica Neue", sans-serif;
             margin-top: 5%;
             display: grid;
             justify-content: center;
         }
         form {
-            max-width: 500px;
-
+            max-width: 300px;
         }
-        label{
+        label {
             margin: 40%;
-            font-size:larger;
-            border-color: #04AA6D;
-            border-radius:4px;
+            font-size: larger;
+            border-color: #030303;
+            border-radius: 4px;
             width: 100%;
             margin-bottom: 15px;
         }
-         input {
-            font-size:larger;
+        input {
+            font-size: larger;
             margin: 18px 3px;
             border-style: solid;
-            border-color: #04AA6D;
-            border-radius:4px;
+            border-color: #000000;
+            border-radius: 4px;
             width: 100%;
             margin-bottom: 15px;
         }
-        button{
-            display: grid;
+        #button-login {
             margin: auto;
+            background-color: #007bff;
+            text-align: center;
+            font-size: medium;
+            text-decoration: none;
+            color: black;
+            border: none;
+            margin-bottom: auto;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
         }
-        button:hover {
-            background-color: #04AA6D;
-            color: white;
-            margin-bottom: center;
+        #button-login:hover {
+            background-color: #0056b3;
+            
+        }
+        #button-cadastro {
+            margin: auto;
+            background-color: #fffb00;
+            text-align: center;
+            text-decoration: none;
+            font-size: medium;
+            color: black;
+            border: none;
+            margin-bottom: auto;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #button-cadastro:hover {
+            background-color: #e6e200;
         }
     </style>
 </head>
@@ -49,14 +78,14 @@
     <h1>Login</h1>
 
     <form>
-        <label for="name">Nome:</label>
-        <input type="text" id="name" name="name" required>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
 
-        <label for="senha">Senha:</label>
+        <label for="senha">Senha</label>
         <input type="password" id="senha" name="senha" required>
 
-        <button type="submit">ENTRAR</button>
-        <button type="button" onclick="window.location.href = '/cadastrar';">CADASTRAR</button>
+        <button type="button" id="button-login" onclick="tentarEntrar()">ENTRAR</button>
+        <button type="button" id="button-cadastro" onclick="location.href='/cadastrar'">CADASTRAR</button>
     </form>
 </body>
 
