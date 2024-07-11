@@ -74,6 +74,7 @@
         <input type="password" id="senha" name="senha" required>
         <button type="submit">Cadastrar</button>
     </form>
+    <button type="button" id="button-cadastro" onclick="location.href='/login'">login</button>
     <div class="message" id="message"></div>
     <script>
         document.getElementById('cadastroForm').addEventListener('submit', async function(e) {
@@ -97,6 +98,7 @@
                 messageDiv.textContent = `Erro: ${result.error}`;
                 messageDiv.style.color = 'red';
             }
+            
         });
     </script>
 </body>
