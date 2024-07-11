@@ -19,6 +19,10 @@ def setup_database():
 
 setup_database()
 
+@app.route('/static/<path:path>')
+def send_static(path):
+    return send_from_directory('static', path)
+
 @app.route('/login')
 def index_login():
     return render_template('login.html')
