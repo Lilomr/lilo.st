@@ -31,9 +31,22 @@ def index_login():
 def index_cadastrar():
     return render_template('index.html')
 
+@app.route('/page')
+def index_page():
+    return render_template('page.html')
+
 @app.route('/')
 def index():
     return render_template('login.html')
+
+@app.route('/api/page', methods=['GET'])
+def page():
+    conn = sqlite3.connect('cadastro.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users')
+    users = cursor.fetchall()
+    conn.close()
+    return jsonify(users)
 
 @app.route('/api/login', methods=['POST'])
 def login():
@@ -66,16 +79,9 @@ def cadastrar_usuario():
         conn.commit()
         conn.close()
 
-        nome_do_arquivo = f"{name}_dados.txt"
-        conteudo = f"Nome: {name}\nEmail: {email}\nSenha: {senha}\n"
-        with open(nome_do_arquivo, "w") as arquivo:
-            arquivo.write(conteudo)
-
         return jsonify({'success': True})
     except sqlite3.IntegrityError:
         return jsonify({'success': False, 'error': 'Email já existe'})
-
-
 
 
 if __name__ == '__main__':

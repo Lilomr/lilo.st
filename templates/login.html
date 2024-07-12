@@ -7,10 +7,9 @@
     <title>Login</title>
     <script>
         function tentarEntrar() {
-            alert("Sem sucesso, tente novamente ou cadastre-se!");
-            window.location.href = '/cadastrar';
-
-        }</script>
+            window.location.href = '/cadastrar';}
+        
+        </script>
 </head>
 
 <body>
@@ -24,6 +23,7 @@
         <input type="password" id="senha" name="senha" required>
 
         <button type="button" id="button-login" onclick="tentarEntrar()">ENTRAR</button>
+        
         
     </form>
     <button type="button" id="button-cadastro" onclick="location.href='/cadastrar'">CADASTRAR</button>
