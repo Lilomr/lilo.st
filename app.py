@@ -1,23 +1,31 @@
 from flask import Flask, request, jsonify, render_template
 import sqlite3
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, login_user
 
 app = Flask(__name__)
 
-def setup_database():
-    conn = sqlite3.connect('cadastro.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        email TEXT NOT NULL UNIQUE,
-        senha TEXT NOT NULL
-    )
-    ''')
-    conn.commit()
-    conn.close()
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///cadastro.db"
+app.config["SECRET_KEY"] = "ENTER YOUR SECRET KEY"
+db = SQLAlchemy()
 
-setup_database()
+login_manager = LoginManager()
+login_manager.init_app(app)
+class Users( db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(250), nullable=False)
+    email = db.Column(db.String(250), unique=True,
+                        nullable=False)
+    password = db.Column(db.String(250),
+                        nullable=False)
+
+db.init_app(app)
+with app.app_context():
+    db.create_all()
+    
+@login_manager.user_loader
+def loader_user(user_id):
+    return Users.query.get(user_id)
 
 @app.route('/static/<path:path>')
 def send_static(path):
@@ -53,14 +61,9 @@ def login():
     data = request.json
     email = data['email']
     senha = data['senha']
-    conn = sqlite3.connect('cadastro.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-    SELECT * FROM users WHERE email = ? AND senha = ?
-    ''', (email, senha))
-    user = cursor.fetchone()
-    conn.close()
+    user = Users.query.get(email=email, password=senha)
     if user:
+        login_user(user)
         return jsonify({'success': True})
     return jsonify({'success': False, 'error': 'Email ou senha incorretos'})
 
@@ -71,13 +74,10 @@ def cadastrar_usuario():
     email = data['email']
     senha = data['senha']
     try:
-        conn = sqlite3.connect('cadastro.db')
-        cursor = conn.cursor()
-        cursor.execute('''
-        INSERT INTO users (name, email, senha) VALUES (?, ?, ?)
-        ''', (name, email, senha))
-        conn.commit()
-        conn.close()
+        user = Users(nome=name, email=email, password=senha)
+        db.session.add(user)
+        
+        db.session.commit()
 
         return jsonify({'success': True})
     except sqlite3.IntegrityError:
