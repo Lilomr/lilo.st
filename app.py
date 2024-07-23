@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 import sqlite3
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user
+
 
 app = Flask(__name__)
 
@@ -61,11 +62,10 @@ def login():
     data = request.json
     email = data['email']
     senha = data['senha']
-    user = Users.query.get(email=email, password=senha)
+    user = Users.query.filter_by(email=email, password=senha).first()
     if user:
-        login_user(user)
         return jsonify({'success': True})
-    return jsonify({'success': False, 'error': 'Email ou senha incorretos'})
+    return jsonify({'success': False, 'error': 'A conta não existe'})
 
 @app.route('/api/cadastrar', methods=['POST'])
 def cadastrar_usuario():
@@ -78,7 +78,7 @@ def cadastrar_usuario():
         db.session.add(user)
         
         db.session.commit()
-
+        
         return jsonify({'success': True})
     except sqlite3.IntegrityError:
         return jsonify({'success': False, 'error': 'Email já existe'})

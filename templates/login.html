@@ -1,32 +1,49 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <link rel="stylesheet" type="text/css" href="/static/geral.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/geral.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
+    <div class="message" id="message"></div>
     <script>
         function tentarEntrar() {
-            window.location.href = '/cadastrar';}
-        
-        </script>
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+            fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({email, senha })
+            })
+            .then(response => response.json())
+            .then(result => {
+                const messageDiv = document.getElementById('message');
+                if (result.success) {
+                    messageDiv.textContent = 'Usuário logado com sucesso!';
+                    messageDiv.style.color = 'green';
+                } else {
+                    messageDiv.textContent = `Erro: ${result.error}`;
+                    messageDiv.style.color = 'red';
+                }
+            });
+        }
+    </script>
 </head>
 
 <body>
     <h1>Login</h1>
 
     <form>
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required>
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required />
 
-        <label for="senha">Senha</label>
-        <input type="password" id="senha" name="senha" required>
+    <label for="senha">Senha</label>
+    <input type="password" id="senha" name="senha" required />
 
-        <button type="button" id="button-login" onclick="tentarEntrar()">ENTRAR</button>
-        
-        
+    <button type="button" id="button-login" onclick="tentarEntrar()">ENTRAR</button>
     </form>
     <button type="button" id="button-cadastro" onclick="location.href='/cadastrar'">CADASTRAR</button>
 </body>
-
 </html>
