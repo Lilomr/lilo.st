@@ -1,5 +1,4 @@
 flask
 gunicorn
 SQLAlchemy
-LoginManager
 sqlite3
