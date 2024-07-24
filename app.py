@@ -48,15 +48,6 @@ def index_page():
 def index():
     return render_template('login.html')
 
-@app.route('/api/page', methods=['GET'])
-def page():
-    conn = sqlite3.connect('cadastro.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users')
-    users = cursor.fetchall()
-    conn.close()
-    return jsonify(users)
-
 @app.route('/api/login', methods=['POST'])
 def login():
     data = request.json
