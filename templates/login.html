@@ -23,6 +23,7 @@
                 if (result.success) {
                     messageDiv.textContent = 'Usuário logado com sucesso!';
                     messageDiv.style.color = 'green';
+                    window.location.href = '/page';
                 } else {
                     messageDiv.textContent = `Erro: ${result.error}`;
                     messageDiv.style.color = 'red';
