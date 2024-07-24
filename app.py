@@ -20,7 +20,7 @@ class Users( db.Model):
     password = db.Column(db.String(250),
                         nullable=False)
 
-db.init_app(app)
+db.app = app(app)
 with app.app_context():
     db.create_all()
     
