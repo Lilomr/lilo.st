@@ -12,6 +12,13 @@ db = SQLAlchemy()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+db.app = app
+db.init_app(app)
+with app.app_context():
+    db.create_all()
+
+
 class Users( db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(250), nullable=False)
@@ -48,6 +55,10 @@ def index_page():
 @app.route('/')
 def index():
     return render_template('login.html')
+
+@app.route('/api/page', methods=['GET'])
+def page():
+    return jsonify({'success': True})
 
 @app.route('/api/login', methods=['POST'])
 def login():
