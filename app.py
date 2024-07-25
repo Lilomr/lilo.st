@@ -47,13 +47,10 @@ def index_cadastrar():
 def index_page():
     return render_template('page.html')
 
+
 @app.route('/')
 def index():
     return render_template('login.html')
-
-@app.route('/api/page', methods=['GET'])
-def page():
-    return jsonify({'success': True})
 
 @app.route('/api/login', methods=['POST'])
 def login():
@@ -75,10 +72,10 @@ def cadastrar_usuario():
         user = Users(nome=name, email=email, password=senha)
         db.session.add(user)
         
-        
-        
+              
         return jsonify({'success': True})
-    except sqlite3.IntegrityError:
+    except sqlite3.IntegrityError as e:
+        print(e)
         return jsonify({'success': False, 'error': 'email já existe'})
 
 
