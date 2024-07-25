@@ -13,11 +13,10 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-db.app = app
+
 db.init_app(app)
 with app.app_context():
     db.create_all()
-
 
 class Users( db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -27,10 +26,6 @@ class Users( db.Model):
     password = db.Column(db.String(250),
                         nullable=False)
 
-db.app = app
-db.init_app(app)
-with app.app_context():
-    db.create_all()
     
 @login_manager.user_loader
 def loader_user(user_id):
