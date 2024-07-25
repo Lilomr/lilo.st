@@ -7,9 +7,6 @@
     <title>Login</title>
     <div class="message" id="message"></div>
     <script>
-        
-
-
         function tentarEntrar() {
             const email = document.getElementById('email').value;
             const senha = document.getElementById('senha').value;
@@ -33,14 +30,6 @@
                     messageDiv.style.color = 'red';
                 }
             }); 
-        }
-                messageDiv.style.color = 'green';
-            } else {
-                messageDiv.textContent = `Erro: ${result.error}`;
-                messageDiv.style.color = 'red';
-            }
-            }); 
-
         }
     </script>
 </head>
