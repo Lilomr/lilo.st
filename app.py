@@ -62,8 +62,10 @@ def login():
         login_user(user)
         return jsonify({'success': True})
     else:
-        return jsonify({'success': False, 'error': 'usuário não encontrado'})
+        return jsonify({'success': False, 'error': 'email ou senha incorretos'})
     
+    
+@app.route('/api/page', methods=['POST'])
 
 @app.route('/api/cadastrar', methods=['POST'])
 def cadastrar_usuario():
