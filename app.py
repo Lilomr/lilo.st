@@ -59,8 +59,11 @@ def login():
     senha = data['senha']
     user = Users.query.filter_by(email=email, password=senha).first()
     if user:
+        login_user(user)
         return jsonify({'success': True})
-    return jsonify({'success': False, 'error': 'A conta não existe'})
+    else:
+        return jsonify({'success': False, 'error': 'usuário não encontrado'})
+    
 
 @app.route('/api/cadastrar', methods=['POST'])
 def cadastrar_usuario():
