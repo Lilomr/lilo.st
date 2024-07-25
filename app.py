@@ -14,9 +14,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-db.init_app(app)
-with app.app_context():
-    db.create_all()
+
 
 class Users( db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -26,7 +24,11 @@ class Users( db.Model):
     password = db.Column(db.String(250),
                         nullable=False)
 
-    
+db.init_app(app)
+with app.app_context():
+    db.app = app
+    db.create_all()
+
 @login_manager.user_loader
 def loader_user(user_id):
     return Users.query.get(user_id)
@@ -76,8 +78,6 @@ def cadastrar_usuario():
     try:
         user = Users(nome=name, email=email, password=senha)
         db.session.add(user)
-        
-              
         return jsonify({'success': True})
     except sqlite3.IntegrityError as e:
         print(e)
