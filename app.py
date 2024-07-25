@@ -75,11 +75,11 @@ def cadastrar_usuario():
         user = Users(nome=name, email=email, password=senha)
         db.session.add(user)
         
-        db.session.commit()
+        
         
         return jsonify({'success': True})
     except sqlite3.IntegrityError:
-        return jsonify({'success': False, 'error': 'Email já existe'})
+        return jsonify({'success': False, 'error': 'email já existe'})
 
 
 if __name__ == '__main__':
