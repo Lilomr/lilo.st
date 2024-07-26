@@ -1,11 +1,10 @@
-from flask import Flask, request, jsonify, redirect, url_for, render_template, send_from_directory
+from flask import Flask, request, jsonify, render_template, send_from_directory
 import sqlite3
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user
 
 
-
-app = Flask(__name__)
+app = Flask(__name__, template_folder='template')
 app.secret_key = 'your_secret_key' 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///cadastro.db"
