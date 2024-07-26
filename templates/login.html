@@ -2,15 +2,11 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="/static/geral.css" />
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <div class="message" id="message"></div>
     <meta headers charset="UTF-8" />
-        
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-    <div class="message" id="message"></div>
     <script>
         
         function tentarEntrar() {
@@ -27,13 +23,18 @@
                 },
                 body : JSON.stringify({email, senha})
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(result => {
                 const messageDiv = document.getElementById('message');
                 if (result.success) {
                     messageDiv.textContent = 'Usuário logado com sucesso!';
                     messageDiv.style.color = 'green';
-                    window.location.href = '/page';
+                    window.location.href = '/page'; 
                 } else {
                     messageDiv.textContent = `Erro: ${result.error}`;
                     messageDiv.style.color = 'red';

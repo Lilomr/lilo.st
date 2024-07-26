@@ -1,10 +1,12 @@
-from flask import Flask, request, jsonify, render_template, send_from_directory
+from flask import Flask, request, jsonify, redirect, url_for, render_template, send_from_directory
 import sqlite3
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, login_user
+from flask_login import UserMixin, LoginManager, login_user
+
 
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key' 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///cadastro.db"
 app.config["SECRET_KEY"] = "ENTER YOUR SECRET KEY"
@@ -12,11 +14,7 @@ db = SQLAlchemy()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-
-
-
-
-class Users( db.Model):
+class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(250), nullable=False)
     email = db.Column(db.String(250), unique=True,
@@ -30,8 +28,8 @@ with app.app_context():
     db.create_all()
 
 @login_manager.user_loader
-def loader_user(user_id):
-    return Users.query.get(user_id)
+def load_user(user_id):
+    return Users.query.get(int(user_id))
 
 @app.route('/static/<path:path>')
 def send_static(path):
@@ -49,7 +47,6 @@ def index_cadastrar():
 def index_page():
     return render_template('page.html')
 
-
 @app.route('/')
 def index():
     return render_template('login.html')
@@ -64,11 +61,8 @@ def login():
         login_user(user)
         return jsonify({'success': True})
     else:
-        return jsonify({'success': False, 'error': 'email ou senha incorretos'})
+        return jsonify({'success': False, 'error': 'Usuário não encontrado'})
     
-    
-@app.route('/api/page', methods=['POST'])
-
 @app.route('/api/cadastrar', methods=['POST'])
 def cadastrar_usuario():
     data = request.json
@@ -78,6 +72,7 @@ def cadastrar_usuario():
     try:
         user = Users(nome=name, email=email, password=senha)
         db.session.add(user)
+        db.session.commit()
         return jsonify({'success': True})
     except sqlite3.IntegrityError as e:
         print(e)
