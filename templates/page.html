@@ -7,7 +7,16 @@
 	<title>Página de Teste</title>
 </head>
 <body>
+
 	<h1>Bem-vindo à Página de Teste</h1>
 	<p>Este é um parágrafo de teste.</p>
+
+	<button id="logoutButton">Desconectar</button>
+
+	<script>
+		document.getElementById("logoutButton").addEventListener("click", function() {
+			window.location.href = "/deslogar";
+		});
+	</script>
 </body>
 </html>

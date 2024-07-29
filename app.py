@@ -1,9 +1,7 @@
-from flask import Flask, request, jsonify, render_template, send_from_directory
+from flask import Flask, request, jsonify, render_template, send_from_directory, redirect
 import sqlite3
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, LoginManager, login_user, login_required
-
-
+from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'your_secret_key' 
@@ -37,7 +35,15 @@ def send_static(path):
 
 @app.route('/login')
 def index_login():
+    if current_user.is_authenticated:
+        return redirect('/page')
     return render_template('login.html')
+
+@app.route('/deslogar')
+def logout():
+    logout_user()
+    return redirect('/login') 
+    
 
 @app.route('/cadastrar')
 def index_cadastrar():
@@ -50,7 +56,7 @@ def index_page():
 
 @app.route('/')
 def index():
-    return render_template('login.html')
+    return redirect('/login')
 
 @app.route('/api/login', methods=['POST'])
 def login():
