@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user
 
 
-app = Flask(__name__, template_folder='template')
+app = Flask(__name__, template_folder='templates')
 app.secret_key = 'your_secret_key' 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///cadastro.db"
