@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify, render_template, send_from_directory
 import sqlite3
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, LoginManager, login_user
+from flask_login import UserMixin, LoginManager, login_user, login_required
+
 
 
 app = Flask(__name__, template_folder='templates')
@@ -43,6 +44,7 @@ def index_cadastrar():
     return render_template('index.html')
 
 @app.route('/page')
+@login_required
 def index_page():
     return render_template('page.html')
 
