@@ -47,6 +47,8 @@ def logout():
 
 @app.route('/cadastrar')
 def index_cadastrar():
+    if current_user.is_authenticated:
+        return redirect('/page')
     return render_template('index.html')
 
 @app.route('/page')
