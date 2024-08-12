@@ -19,6 +19,13 @@ class Users(UserMixin, db.Model):
                         nullable=False)
     password = db.Column(db.String(250),
                         nullable=False)
+    
+class Publicacao(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    conteudo = db.Column(db.String(250), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user = db.relationship('Users', backref=db.backref('publicacoes', lazy=True))
+    
 
 db.init_app(app)
 with app.app_context():
@@ -28,6 +35,7 @@ with app.app_context():
 @login_manager.user_loader
 def load_user(user_id):
     return Users.query.get(int(user_id))
+
 
 @app.route('/static/<path:path>')
 def send_static(path):
@@ -86,6 +94,34 @@ def cadastrar_usuario():
     except sqlite3.IntegrityError as e:
         print(e)
         return jsonify({'success': False, 'error': 'email já existe'})
+
+@app.route('/api/publicar', methods=['POST'])
+def publicar():
+    data = request.json
+    conteudo = data['conteudo']
+    publicacao = Publicacao(conteudo=conteudo, user_id=current_user.id)
+    db.session.add(publicacao)
+    db.session.commit()
+    return jsonify({'success': True})
+
+@app.route('/api/publicacoes', methods=['GET'])
+def get_publicacoes():
+    publicacoes = Publicacao.query.order_by(Publicacao.id.desc()).all()
+    
+    return jsonify([{'id': p.id, 'conteudo': p.conteudo, 'user': p.user.nome} for p in publicacoes])
+
+@app.route('/api/deletar', methods=['POST'])
+def deletar():
+    data = request.json
+    id = data['id']
+    publicacao = Publicacao.query.filter_by(id=id).first()
+    if publicacao.user_id == current_user.id:
+        db.session.delete(publicacao)
+        db.session.commit()
+        return jsonify({'success': True})
+    else: 
+        return jsonify({'success': False, 'error': 'Você não pode deletar essa publicação'})
+    
 
 
 if __name__ == '__main__':
