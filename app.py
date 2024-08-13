@@ -95,7 +95,8 @@ def cadastrar_usuario():
         print(e)
         return jsonify({'success': False, 'error': 'email já existe'})
 
-@app.route('/api/publicar', methods=['POST'])
+@app.route('/api/publicar',methods=['POST'])
+@login_required
 def publicar():
     data = request.json
     conteudo = data['conteudo']
@@ -105,12 +106,14 @@ def publicar():
     return jsonify({'success': True})
 
 @app.route('/api/publicacoes', methods=['GET'])
+@login_required
 def get_publicacoes():
     publicacoes = Publicacao.query.order_by(Publicacao.id.desc()).all()
     
     return jsonify([{'id': p.id, 'conteudo': p.conteudo, 'user': p.user.nome} for p in publicacoes])
 
 @app.route('/api/deletar', methods=['POST'])
+@login_required
 def deletar():
     data = request.json
     id = data['id']
