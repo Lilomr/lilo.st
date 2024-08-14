@@ -21,6 +21,7 @@
 			const messageDiv = document.getElementById('message');
 			if (result.success) {
 				messageDiv.textContent = 'Postado com sucesso!';
+				document.getElementById('content').value = '';
 				messageDiv.style.color = 'green';
 				carregarPublicacoes();
 			} else {

@@ -103,6 +103,9 @@ def publicar():
     data = request.json
     conteudo = data['conteudo']
     publicacao = Publicacao(conteudo=conteudo, user_id=current_user.id)
+
+    if not conteudo:
+        return jsonify({'success': False, 'error': 'Escreva algo'})
     db.session.add(publicacao)
     db.session.commit()
     return jsonify({'success': True})
