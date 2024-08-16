@@ -1,13 +1,17 @@
 from flask import Flask, request, jsonify, render_template, send_from_directory, redirect
 import sqlite3
 import secrets
+from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
+import os
+
+load_dotenv()
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = secrets.token_hex(16) 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///cadastro.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URL')
 app.config["SECRET_KEY"] = secrets.token_hex(16)
 db = SQLAlchemy()
 
