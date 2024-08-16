@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify, render_template, send_from_directory, redirect
-import sqlite3
 import secrets
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import exc 
 from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
 import os
 
@@ -97,7 +97,7 @@ def cadastrar_usuario():
         db.session.add(user)
         db.session.commit()
         return jsonify({'success': True})
-    except sqlite3.IntegrityError as e:
+    except exc.IntegrityError as e:
         print(e)
         return jsonify({'success': False, 'error': 'email já existe'})
 
