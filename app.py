@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import exc 
 from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
 import os
+import bcrypt
 
 load_dotenv()
 
@@ -24,7 +25,6 @@ class Users(UserMixin, db.Model):
                         nullable=False)
     password = db.Column(db.String(250),
                         nullable=False)
-    
 class Publicacao(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     conteudo = db.Column(db.String(250), nullable=False)
@@ -79,8 +79,10 @@ def login():
     data = request.json
     email = data['email']
     senha = data['senha']
-    user = Users.query.filter_by(email=email, password=senha).first()
-    if user:
+    user = Users.query.filter_by(email=email).first()
+        
+    if user and bcrypt.checkpw(bytes(senha, 'utf-8'), bytes(user.password, 'utf-8')):
+        
         login_user(user)
         return jsonify({'success': True})
     else:
@@ -91,9 +93,13 @@ def cadastrar_usuario():
     data = request.json
     name = data['name']
     email = data['email']
-    senha = data['senha']
+    senha: str = data['senha']
+
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(bytes(senha,'utf-8'), salt)
+    
     try:
-        user = Users(nome=name, email=email, password=senha)
+        user = Users(nome=name, email=email, password=hashed.decode('utf-8'))
         db.session.add(user)
         db.session.commit()
         return jsonify({'success': True})
