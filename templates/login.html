@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/static/geral.css" />
+    <link rel="stylesheet" type="text/css" href="/static/login.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <div class="message" id="message"></div>
@@ -43,21 +43,26 @@
     </script>
 </head>
 <body>
-    <h1>Login</h1>
-    <div class="container">
-        <img src="/static/logo.png" width="80" height="80" />
-    </div>
-
-    <form>
-
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" required />
-
-    <label for="senha">Senha</label>
-    <input type="password" id="senha" name="senha" required />
-
-    <button type="button" id="button-login" onclick="tentarEntrar()">ENTRAR</button>
-    </form>
-    <button type="button" id="button-cadastro" onclick="location.href='/cadastrar'">CADASTRAR</button>
-</body>
+    <section class="centralizar">
+        
+        
+        
+        <h1>Login</h1>
+        <div class="logo">
+            <img src="/static/logo.png" width="80" height="80" />
+        </div>
+        
+        <form>
+            
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required />
+            
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" name="senha" required />
+            
+            <button type="button" id="button-login" onclick="tentarEntrar()">ENTRAR</button>
+        </form>
+        <button type="button" id="button-cadastro" onclick="location.href='/cadastrar'">CADASTRAR</button>
+    </section>
+    </body>
 </html>
