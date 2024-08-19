@@ -4,6 +4,8 @@ body {
     margin-top: 5%;
     display: grid;
     justify-content: center;
+    background-color: white;
+    box-decoration-break:inherit;
 }
 form {
     max-width: 300px;
@@ -16,28 +18,35 @@ label{
     width: 100%;
     
 }
- input {
+input{
     font-size:larger;
     margin: 18px 3px;
     border-style: solid;
     border-color: black;
     border-radius:4px;
     width: 100%;
-    
+}
+label:hover ~  {
+    background-color: gray;
 }
 button {
-    padding: 10px 40px;
-    margin:auto ;
+    padding: 10px 35px;
+    margin-bottom: 2% ;
+    font-size: large;
     background-color: #000000;
     border-radius: 8px;
     color: white;
     border: none;
     text-align: center;
     text-decoration: none;
-    display: grid;
+    display: block;
     cursor: pointer;
     background-color: white; 
     color: black; 
+    align-items: center;
+    margin-left: 2.5em;
+    width: 70%;
+    justify-content: center;
     border: 2.5px solid black;
 }
 button:hover {
