@@ -1,6 +1,6 @@
 body {
     text-align: center;
-    font-family: Arial, sans-serif;
+    font-family: "Lucida Console", "Courier New", monospace;
     margin-top: 5%;
     display: grid;
     justify-content: center;
@@ -9,6 +9,7 @@ body {
 }
 form {
     max-width: 300px;
+    font-family: "Lucida Console", "Courier New", monospace;
 }
 label{
     margin: 40%;
