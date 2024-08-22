@@ -94,7 +94,6 @@ def cadastrar_usuario():
     name = data['name']
     email = data['email']
     senha: str = data['senha']
-
     salt = bcrypt.gensalt()
     hashed = bcrypt.hashpw(bytes(senha,'utf-8'), salt)
     
@@ -105,7 +104,7 @@ def cadastrar_usuario():
         return jsonify({'success': True})
     except exc.IntegrityError as e:
         print(e)
-        return jsonify({'success': False, 'error': 'email já existe'})
+        return jsonify({'success': False, 'error': 'Email já existe'})
 
 @app.route('/api/publicar',methods=['POST'])
 @login_required

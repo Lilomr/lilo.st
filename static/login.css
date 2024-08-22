@@ -146,7 +146,13 @@ div.input-solo .input:valid ~ label{
     background-color: #a49ad1;
     ;
 }
-.message {
-    text-align: center;
-    margin-top: 20px;
+div.message-login {
+    position: absolute;
+    top: 93%;
+    white-space: nowrap;
+}
+.centralizar.message-cadastro {
+    position: absolute;
+    top: 93%;
+    white-space: nowrap;
 }

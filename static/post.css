@@ -1,11 +1,9 @@
-body {
-	background-color: white; 
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-family: "Lucida Console", "Courier New", monospace;
-	flex-direction: column;
-	padding: 20px;
+body{
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .content-container {
