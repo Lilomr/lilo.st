@@ -8,20 +8,33 @@
 </head>
 <body>
     <section class="centralizar">
-        <h1>REGISTRAR</h1>
-        <div class="logo">
-            <img src="/static/logo.png" width="80" height="80" />
-    <form id="cadastroForm">
-        <label for="name">Nome</label>
-        <input type="text" id="name" name="name" required>
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required>
-        <label for="senha">Senha</label>
-        <input type="password" id="senha" name="senha" required>
-        <button type="submit">Cadastrar</button>
-    </form>
-    <button type="button" id="button-cadastro" onclick="location.href='/login'">Conecte-se</button>
-    <div class="message" id="message"></div>
+        <section class="rel">
+        <h1 class="cadastro">REGISTRAR</h1>
+
+        <img src="/static/logo.png"/>
+        <form class="il" id="cadastroForm">
+
+            <div class="input-solo">
+                <input  type="text" id="name" name="name" class="input" required>
+                <label for="name">Nome</label>
+            </div>
+            <div class="input-solo">
+                <input  type="email" id="email" name="email"  class="input"required>
+                <label for="email">E-mail</label>
+            </div>
+            <div class="input-solo">
+                <input type="password" id="senha" name="senha" class="input" required>
+                <label for="senha">Senha</label>
+            </div>
+        </form>
+        <div class="bb">
+
+            <button class="b1" type="submit">Cadastrar</button>
+            <button class="b2" type="button" id="button-cadastro" onclick="location.href='/login'">Conecte-se</button>
+        </div>
+        <div class="message" id="message"></div>
+    </section>
+    </section>
     <script>
         document.getElementById('cadastroForm').addEventListener('submit', async function(e) {
             e.preventDefault();

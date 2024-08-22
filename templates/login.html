@@ -44,21 +44,30 @@
 </head>
 <body>
     <section class="centralizar">
-        <h1>Login</h1>
-        <div class="logo">
-            <img src="/static/logo.png" width="80" height="80" />
-        </div>
-        <form>
+        <section class="rel">
+
+        <h1><img src="/static/logintitulo.png" ></h1>
+        <img src="/static/logo.png" />
+
+        <form class="il">
+            <div class="input-solo">
+                <input type="text" id="email" name="email" class="input" required />
+                <label for="email">E-mail</label>
+            </div>
+
+            <div class="input-solo">
+                <input  type="password" id="senha" name="senha" class="input" required /> 
+                
+                <label for="senha">Senha</label>
+            </div>
             
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required />
-            
-            <label for="senha">Senha</label>
-            <input type="password" id="senha" name="senha" required />
-            
-            <button type="button" id="button-login" onclick="tentarEntrar()">ENTRAR</button>
         </form>
-        <button type="button" id="button-cadastro" onclick="location.href='/cadastrar'">CADASTRAR</button>
+                
+        <div class="bb">
+            <button class="b1" type="button" id="button-login" onclick="tentarEntrar()">ENTRAR</button>
+            <button class="b2" type="button" id="button-cadastro" onclick="location.href='/cadastrar'">CADASTRAR</button>
+        </div>
+    </section>
     </section>
     </body>
 </html>
