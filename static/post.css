@@ -1,83 +1,87 @@
 body{
-    background-color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+	background-color: darkgray;
 }
+.centralizar {
 
-.content-container {
-	background-color: #ffffff; 
-	border: 1px solid blueviolet; 
-	border-radius: 8px; 
-	padding: 20px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-	width: 90%;
-	max-width: 600px; 
-	box-sizing: border-box;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	height: 70vh;
+	min-height: 600px;
+	max-height: 600px;
+	max-width: 400px;
+	min-width: 300px;
 	text-align: center;
-	font-family: "Lucida Console", "Courier New", monospace;
-	box-decoration-break:inherit;
-	
-}
-
-.post-container {
-	background-color: #f9f9f9; 
-	border: 1px solid #ccc; 
-	border-radius: 8px; 
-	max-width: 600px;
-	padding: 20px 100px;
-    text-align: center;
-	margin-top: 20px;
+	justify-content: center;
 	box-sizing: border-box;
-	display: grid;
-	flex-direction: column;
-	overflow: scroll;
-	word-break: break-word;
+	border: 2px solid #052384;
 }
 
-.post {
-	
-	background-color: #f9f9f9; 
-	border: 1px solid #ccc; 
-	text-align: center;
-	border-radius: 4px; 
-	padding: 20px ;
-	margin-top: 20px;
+.section>h1 {
+	position: absolute;
+	transform: translate(-50%, -50%);
+	display: block;
+	align-items: center;
+}
+
+.centralizar>textarea {
+	position: absolute;
+	top: 96%;
+	left: 42%;
+	transform: translate(-50%, -50%);
+}
+.centralizar > #linha-horizontal {
+	position: absolute;
+	top : 92%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    width: 100%;
+    border: 1px solid #052384;
+}
+.centralizar > textarea{
+	background: none;
+	width: 80%;
+	min-height: 30px;
+	resize: none;
+	white-space: nowrap;
+	overflow: hidden;
+	outline: 0;
+	cursor: text;
 	box-sizing: border-box;
-	display: grid;
-	word-break: break-word;
-}
-
-
-button {
-	font-family:"Lucida Console", "Courier New", monospace;
-	padding: 10px 35px;
-	margin-bottom: 2% ;
-	background-color:gray; 
-	color: black;
-	border: 2.5px solid black;
-	border-radius: 4px;
-	text-align: center;
+	padding: 5px;
 	font-size: 16px;
-	cursor: pointer;
-	width: 50%;
+	border: 1px solid rgb(43, 43, 43);
+	font-family: Arial, Helvetica, sans-serif;
+	border-radius: none;
+}
+.centralizar > .postagem{
+	font-family: Arial, Helvetica, sans-serif;
+	align-items: flex-start;
+    gap: 13px;
+	position: absolute;
+	top: 55%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: 1px solid black;
+	background-color: darkcyan;
+	display: flex;
+	box-sizing: border-box;
+	overflow-y: scroll;
+	scrollbar-width: thin;
+	scrollbar-color: #052384 darkcyan;
+	flex-direction: column;
+	max-height: 400px;
+	min-height: 400px;
+	min-width: 250px;
+}
+.centralizar > .b1{
+	position: absolute;
+	top: 96%;
+	left: 91%;
+	transform: translate(-50%, -50%);
+	background: none;
+	border: none;
+	border-radius: 0;
 }
 
-.button-deletar {
-	
-}
-	
-
-textarea {
-	margin: center;
-	width: 100%;
-	height: 100px;
-	border: 2px solid #ccc;
-	border-radius: 4px;
-	
-}
-
-button:hover {
-	background-color: blueviolet; 
-}

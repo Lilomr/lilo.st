@@ -5,3 +5,4 @@ flask_login
 python-dotenv
 psycopg2
 bcrypt
+flask_socketio

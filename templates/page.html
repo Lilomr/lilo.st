@@ -1,92 +1,144 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-	<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lilo.st</title>
-    <link rel="stylesheet" type="text/css" href="/static/post.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Página</title>
+    <link rel="stylesheet" type="text/css" href="/static/post.css" />
 
-	<script>
-		async function tentarPostar() {
-			const conteudo = document.getElementById('content').value;
-			console.log(conteudo);
-			const response = await fetch('/api/publicar', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({conteudo})
-			});
-			const result = await response.json();
-			const messageDiv = document.getElementById('message');
-			if (result.success) {
-				messageDiv.textContent = 'Postado com sucesso!';
-				document.getElementById('content').value = '';
-				messageDiv.style.color = 'green';
-				carregarPublicacoes();
-			} else {
-				messageDiv.textContent = `Erro: ${result.error}`;
-				messageDiv.style.color = 'red';
-			}
-		}
-	</script>
-</head>
-<body>
-	<section class="centralizar">
-	<div class="content-container">
-		<div class="message" id="message"></div>
-			<label for="content">Conteúdo</label>
-			<textarea id="content" name="conteudo" required></textarea>
-			<button id="button-post" onclick="tentarPostar()">POSTAR</button>
-		
-		<button id="logoutButton">Desconectar</button>
-	</div>
-	<div class="post-container">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
+    <script>
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+      socket.on('publicacao', function (data) {
+        adicionarPublicacao(data)
+      })
+      function adicionarPublicacao(data){
+        const container = document.querySelector('.postagem')
+        const div = document.createElement('div')
+        div.className = 'post'
+        div.textContent = `${data.user}: ${data.conteudo}`
+        div.id = data.id
+        container.insertBefore(div, container.firstChild)
+        botao = document.createElement('button-deletar')
+        botao.innerHTML = '<img src="/static/deletar.png" alt="Deletar" width="25" height="25">'
+        botao.addEventListener('click', async function () {
+          const response = await fetch('/api/deletar', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: data.id, user: data.user })
+          })
+          const result = await response.json()
+          if (result.success) {
+            carregarPublicacoes()
+          } else {
+            const messageDiv = document.getElementById('message')
+            messageDiv.textContent = `Erro: ${result.error}`
+            messageDiv.style.color = 'red'
+          }
+        })
+        div.appendChild(botao)
+      }
+      socket.on('deletar', function (data) {
+        const container = document.querySelector('.postagem')
+        const divs = container.querySelectorAll('.post')
+        console.log(data)
+        divs.forEach((div) => {
+          if (div.id == data.id) {
+            div.remove()
+          }
+        })
+      }
+      async function tentarPostar(event) {
+        if (event && event.key !== 'Enter') return; 
+        event.preventDefault();
+        const conteudo = document.getElementById('content').value
+        console.log(conteudo)
+        const response = await fetch('/api/publicar', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ conteudo: content }),
+        });
+        const result = await response.json()
+        const messageDiv = document.getElementById('message')
+        document.getElementById('content').value = ''
+        if (result.success) {
+          messageDiv.textContent = 'Postado com sucesso!'
+          messageDiv.style.color = 'green'
+        } else {
+          messageDiv.textContent = `Erro: ${result.error}`
+          messageDiv.style.color = 'red'
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+          document.getElementById('logoutButton').addEventListener('click', function () {
+            window.location.href = '/deslogar';
+          });
+        });
+          
+          document.getElementById('content').addEventListener('keydown', function (event) {
+            if (event.key === 13) {
+              tentarPostar(event);
+            }
+          });
+        });
+        </script>
+  </head>
+  <body> 
+    <section class="centralizar">
+      <h1>Conteúdo</h1>
+      <div class="postagem"></div>
+      <button class="b1" type="submit" id="button-post" onclick="tentarPostar()">
+        <img src="/static/enviar.png" alt="Postar" width="23" height="24">
+      </button>
+      <div id="linha-horizontal"></div>
+      <button id="logoutButton">Desconectar</button>
+      <textarea style="resize: none" id="content" name="conteudo" placeholder="Mensagem" rows="1" cols="1" required onkeyup="if(event.keyCode === 13) tentarPostar()"></textarea>
+      <div class="message" id="message"></div>
 
-    </div> 
-
-	<script>
-		document.getElementById("logoutButton").addEventListener("click", function() {
-			window.location.href = "/deslogar";
-		});
-		async function carregarPublicacoes() {
-			const response = await fetch('/api/publicacoes');
-			const result = await response.json();
-			const container = document.querySelector('.post-container');
-			container.innerHTML = '';
-			result.forEach(publicacao => {
-				const div = document.createElement('div');
-				div.className = 'post';
-				div.textContent = `${publicacao.user}: ${publicacao.conteudo}`;
-				container.appendChild(div);
-				botao = document.createElement('button-deletar');
-				botao.innerHTML = '<img src="/static/deletar.jpg" alt="Deletar" width="25" height="25">';
-				
-
-				botao.addEventListener('click', async function() {
-					const response = await fetch('/api/deletar', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json'
-						},
-						body: JSON.stringify({id: publicacao.id, user: publicacao.user})
-					});
-					const result = await response.json();
-					if (result.success) {
-						carregarPublicacoes();
-					} else {
-						const messageDiv = document.getElementById('message');
-						messageDiv.textContent = `Erro: ${result.error}`;
-						messageDiv.style.color = 'red';
-					}
-				});
-				div.appendChild(botao);
-			});
-		}
-
-		carregarPublicacoes();
-    
-	</script>
-</section>
-</body>
+      <script>
+        document.getElementById('logoutButton').addEventListener('click', function () {
+          window.location.href = '/deslogar'
+        })
+        async function carregarPublicacoes() {
+          const response = await fetch('/api/publicacoes')
+          const result = await response.json()
+          const container = document.querySelector('.postagem')
+          container.innerHTML = ''
+          result.forEach((publicacao) => {
+            const div = document.createElement('div')
+            div.className = 'post'
+            div.textContent = `${publicacao.user}: ${publicacao.conteudo}`
+            div.id = publicacao.id
+            container.appendChild(div)
+            botao = document.createElement('button-deletar')
+            botao.innerHTML = '<img src="/static/deletar.png" alt="Deletar" width="25" height="25">'
+        
+            botao.addEventListener('click', async function () {
+              const response = await fetch('/api/deletar', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: publicacao.id, user: publicacao.user })
+              })
+              const result = await response.json()
+              if (result.success) {
+                carregarPublicacoes()
+              } else {
+                const messageDiv = document.getElementById('message')
+                messageDiv.textContent = `Erro: ${result.error}`
+                messageDiv.style.color = 'red'
+              }
+            })
+            div.appendChild(botao)
+          })
+        }
+        
+        carregarPublicacoes()
+      </script>
+    </section>
+  </body>
 </html>

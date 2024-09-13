@@ -1,4 +1,6 @@
-
+body{
+    background-color: darkgray;
+}
 .centralizar{
     background-color: white;
     position: absolute;
@@ -8,7 +10,7 @@
 }
 
 .centralizar > section{
-    border: 2px solid #052384;
+    border: 2px solid black; 
     border-radius: 3px;
     height: 70vh;
     min-height: 600px;
