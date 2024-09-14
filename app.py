@@ -7,6 +7,7 @@ import os
 import bcrypt
 from flask_socketio import SocketIO
 
+
 load_dotenv()
 
 app = Flask(__name__, template_folder='templates')
@@ -14,13 +15,13 @@ app.secret_key = os.getenv('SECRET_KEY')
 
 socketio = SocketIO(app)
 
+
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URL')
 app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
 db = SQLAlchemy()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-
 
 class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -85,14 +86,6 @@ def index():
     return redirect('/login')
 
 
-@socketio.on('connect')
-def handle_connect():
-    print('Client connected')
-
-
-@socketio.on('disconnect')
-def handle_disconnect():
-    print('Client disconnected')
 
 
 @socketio.on('message')
@@ -174,3 +167,5 @@ def deletar():
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
+
+
