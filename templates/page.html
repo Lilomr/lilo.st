@@ -79,13 +79,15 @@
   </head>
   <body> 
     <section class="centralizar">
-      <h1>Conteúdo</h1>
+      <h1>Conversas</h1>
       <div class="postagem"></div>
       <button class="b1" type="submit" id="button-post" onclick="tentarPostar()">
         <img src="/static/enviar.png" alt="Postar" width="23" height="24">
       </button>
       <div id="linha-horizontal"></div>
-      <button id="logoutButton">Desconectar</button>
+      <button class="sair" id="logoutButton">
+        <img src="/static/deslogar.png" alt="Sair" width="23" height="24">
+      </button>
       <textarea style="resize: none" id="content" name="conteudo" placeholder="Mensagem" rows="1" cols="1" required ></textarea>
       <div class="message" id="message"></div>
 
