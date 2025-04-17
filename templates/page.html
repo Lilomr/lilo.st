@@ -4,8 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Página</title>
-    <link rel="stylesheet" type="text/css" href="/static/post.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body class="bg-light">
+    <div class="container d-flex flex-column align-items-center vh-100 py-4">
+      <h1 class="mb-4">Conversas</h1>
+      <div class="card w-100" style="max-width: 400px;">
+        <div class="card-body">
+          <div class="postagem overflow-auto mb-3" style="max-height: 400px;"></div>
+          <input id="content" type="text" class="form-control mb-3" placeholder="Mensagem" />
+          <div class="d-flex justify-content-between">
+            <button id="button-post" class="btn btn-primary" onclick="tentarPostar()">Postar</button>
+            <button id="logoutButton" class="btn btn-danger">Sair</button>
+          </div>
+          <div id="message" class="alert mt-3 d-none" role="alert"></div>
+        </div>
+      </div>
+    </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./Scripts/jquery.csv-0.71.min.js"></script>
     <script>
       var socket = io.connect('http://' + document.domain + ':' + location.port);
@@ -15,12 +32,13 @@
       function adicionarPublicacao(data){
         const container = document.querySelector('.postagem')
         const div = document.createElement('div')
-        div.className = 'post'
-        div.textContent = `${data.user}: ${data.conteudo}`
+        div.className = 'd-flex justify-content-between align-items-center border-bottom py-2'
+        div.innerHTML = `<span>${data.user}: ${data.conteudo}</span>`
         div.id = data.id
         container.insertBefore(div, container.firstChild)
-        botao = document.createElement('button-deletar')
-        botao.innerHTML = '<img src="/static/deletar.png" alt="Deletar" width="25" height="25">'
+        const botao = document.createElement('button')
+        botao.className = 'btn btn-sm btn-danger'
+        botao.textContent = 'Deletar'
         botao.addEventListener('click', async function () {
           const response = await fetch('/api/deletar', {
             method: 'POST',
@@ -35,14 +53,15 @@
           } else {
             const messageDiv = document.getElementById('message')
             messageDiv.textContent = `Erro: ${result.error}`
-            messageDiv.style.color = 'red'
+            messageDiv.className = 'alert alert-danger'
+            messageDiv.classList.remove('d-none')
           }
         })
         div.appendChild(botao)
       }
       socket.on('deletar', function (data) {
         const container = document.querySelector('.postagem')
-        const divs = container.querySelectorAll('.post')
+        const divs = container.querySelectorAll('.d-flex')
         console.log(data)
         divs.forEach((div) => {
           if (div.id == data.id) {
@@ -66,72 +85,67 @@
           document.getElementById('content').value = '';
           if (result.success) {
             messageDiv.textContent = 'Postado com sucesso!';
-            messageDiv.style.color = 'green';
+            messageDiv.className = 'alert alert-success';
+            messageDiv.classList.remove('d-none');
+            carregarPublicacoes();
           } else {
             messageDiv.textContent = `Erro: ${result.error}`;
-            messageDiv.style.color = 'red';
+            messageDiv.className = 'alert alert-danger';
+            messageDiv.classList.remove('d-none');
           }
         } catch (error) {
           console.error('Erro ao postar:', error);
         }
       }
-          </script>
-  </head>
-  <body> 
-    <section class="centralizar">
-      <h1>Conversas</h1>
-      <div class="postagem"></div>
-      <button class="b1" type="submit" id="button-post" onclick="tentarPostar()">
-        <img src="/static/enviar.png" alt="Postar" width="23" height="24">
-      </button>
-      <div id="linha-horizontal"></div>
-      <button class="sair" id="logoutButton">
-        <img src="/static/deslogar.png" alt="Sair" width="23" height="24">
-      </button>
-      <textarea style="resize: none" id="content" name="conteudo" placeholder="Mensagem" rows="1" cols="1" required ></textarea>
-      <div class="message" id="message"></div>
+    </script>
+    <script>
+      document.getElementById('logoutButton').addEventListener('click', function () {
+        window.location.href = '/deslogar';
+      });
 
-      <script>
-        document.getElementById('logoutButton').addEventListener('click', function () {
-          window.location.href = '/deslogar'
-        })
-        async function carregarPublicacoes() {
-          const response = await fetch('/api/publicacoes')
-          const result = await response.json()
-          const container = document.querySelector('.postagem')
-          container.innerHTML = ''
-          result.forEach((publicacao) => {
-            const div = document.createElement('div')
-            div.className = 'post'
-            div.textContent = `${publicacao.user}: ${publicacao.conteudo}`
-            div.id = publicacao.id
-            container.appendChild(div)
-            botao = document.createElement('button-deletar')
-            botao.innerHTML = '<img src="/static/deletar.png" alt="Deletar" width="25" height="25">'
-        
-            botao.addEventListener('click', async function () {
-              const response = await fetch('/api/deletar', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ id: publicacao.id, user: publicacao.user })
-              })
-              const result = await response.json()
-              if (result.success) {
-                carregarPublicacoes()
-              } else {
-                const messageDiv = document.getElementById('message')
-                messageDiv.textContent = `Erro: ${result.error}`
-                messageDiv.style.color = 'red'
-              }
-            })
-            div.appendChild(botao)
-          })
+      document.getElementById('content').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+          event.preventDefault(); 
+          tentarPostar(); 
         }
-        
-        carregarPublicacoes()
-      </script>
-    </section>
+      });
+
+      async function carregarPublicacoes() {
+        const response = await fetch('/api/publicacoes');
+        const result = await response.json();
+        const container = document.querySelector('.postagem');
+        container.innerHTML = '';
+        result.forEach((publicacao) => {
+          const div = document.createElement('div');
+          div.className = 'd-flex justify-content-between align-items-center border-bottom py-2';
+          div.innerHTML = `<span>${publicacao.user}: ${publicacao.conteudo}</span>`;
+          div.id = publicacao.id;
+
+          const botao = document.createElement('button');
+          botao.className = 'btn btn-sm btn-danger';
+          botao.textContent = 'Deletar';
+          botao.addEventListener('click', async function () {
+            const response = await fetch('/api/deletar', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id: publicacao.id }),
+            });
+            const result = await response.json();
+            if (result.success) {
+              carregarPublicacoes();
+            } else {
+              const messageDiv = document.getElementById('message');
+              messageDiv.textContent = `Erro: ${result.error}`;
+              messageDiv.className = 'alert alert-danger';
+              messageDiv.classList.remove('d-none');
+            }
+          });
+          div.appendChild(botao);
+          container.appendChild(div);
+        });
+      }
+
+      carregarPublicacoes();
+    </script>
   </body>
 </html>
