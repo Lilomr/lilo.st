@@ -1,9 +1,8 @@
-/* Estilo geral */
 body {
-    background-color: #f8f9fa; /* Cor de fundo clara */
+    background-color: #f8f9fa; 
 }
 
-/* Centralizar o conteúdo */
+
 .centralizar {
     max-width: 400px;
     width: 100%;
@@ -15,7 +14,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Imagem do logo */
+
 .centralizar img {
     max-width: 100px;
     margin-bottom: 1rem;
@@ -130,7 +129,7 @@ div.input-solo .input:valid ~ label{
     
 }
 
-/* Botões */
+
 button {
     font-size: 1rem;
     padding: 0.5rem 1rem;
@@ -139,11 +138,11 @@ button {
 }
 
 button:hover {
-    background-color: #6c757d; /* Cor de hover */
+    background-color: #6c757d; 
     color: #ffffff;
 }
 
-/* Mensagens de feedback */
+
 div.message-login,
 div.message-cadastro {
     margin-top: 1rem;
