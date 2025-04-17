@@ -1,71 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="/static/login.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <meta headers charset="UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%;">
+            <div class="text-center mb-4">
+                <img src="/static/logo.png" alt="Logo" class="img-fluid" style="max-width: 100px;">
+                <h1 class="h4 mt-3">Login</h1>
+            </div>
+            <div id="message" class="alert d-none" role="alert"></div>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="senha" class="form-label">Senha</label>
+                    <input type="password" id="senha" name="senha" class="form-control" required>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                    <button type="button" class="btn btn-secondary" onclick="location.href='/cadastrar'">Cadastrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        
-        function tentarEntrar() {
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
             const email = document.getElementById('email').value;
             const senha = document.getElementById('senha').value;
-            const formData = new FormData();
-            formData.append('email', email);
-            formData.append('senha', senha);
-            
-            fetch('/api/login', {
+
+            const response = await fetch('/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body : JSON.stringify({email, senha})
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(result => {
-                const messageDiv = document.getElementById('message');
-                if (result.success) {
-                    messageDiv.textContent = 'Usuário logado com sucesso!';
-                    messageDiv.style.color = 'green';
-                    window.location.href = '/page'; 
-                } else {
-                    messageDiv.textContent = `Erro: ${result.error}`;
-                    messageDiv.style.color = 'red';
-                }
-            }); 
-        }
-    </script>
-</head>
-<body>
-    <section class="centralizar">
-        <section class="rel">
-        <h1><img src="/static/logintitulo.png" ></h1>
-        <img src="/static/logo.png" />
-        <div class="message-login" id="message"></div>
-        <form class="il">
-            <div class="input-solo">
-                <input type="email" id="email" name="email" class="input" required />
-                <label for="email">E-mail</label>
-            </div>
+                body: JSON.stringify({ email, senha })
+            });
 
-            <div class="input-solo">
-                <input  type="password" id="senha" name="senha" class="input" required /> 
-                
-                <label for="senha">Senha</label>
-            </div>
-            
-        </form>
-                
-        <div class="bb">
-            <button type="button" id="button-login" onclick="tentarEntrar()">ENTRAR</button>
-            <button type="button" id="button-cadastro" onclick="location.href='/cadastrar'">CADASTRAR</button>
-        </div>
-    </section>
-    </section>
-    </body>
+            const result = await response.json();
+            const messageDiv = document.getElementById('message');
+            if (result.success) {
+                window.location.href = '/page';
+            } else {
+                messageDiv.textContent = `Erro: ${result.error}`;
+                messageDiv.className = 'alert alert-danger';
+                messageDiv.classList.remove('d-none');
+            }
+        });
+    </script>
+</body>
 </html>
